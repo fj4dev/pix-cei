@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+    nodejs-app:
+        build:
+          context: ./backend
+        container_name: backend
+        hostname: backend
+        ports:
+            - "3030:3030" 
+        networks:
+            - api-cei  
+    nginx:
+        build:
+          context: ./nginx
+        container_name: nginx
+        hostname: nginx
+        environment:
+            CERTBOT_EMAIL: silvafj.dev@gmail.com
+            ENVSUBST_VARS: FQDN
+            FQDN: localhost:80
+        ports:
+            - "80:80" 
+        depends_on:
+            - backend
+        networks:
+            - api-cei
+
+networks:
+  api-cei:
+    external: false
+    name: api-cei

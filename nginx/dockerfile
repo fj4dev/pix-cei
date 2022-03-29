@@ -1,0 +1,16 @@
+FROM nginx:latest
+
+COPY html /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d
+RUN apt-get update
+RUN apt-get install -y vim
+RUN apt-get install -y certbot 
+RUN apt-get install -y python3-certbot-nginx
+RUN certbot --nginx -y
+
+
+
+
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
+
+CMD [ "nginx", "-g", "daemon off;" ] 
